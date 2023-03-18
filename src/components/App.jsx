@@ -61,13 +61,15 @@ export class App extends Component {
       <section>
         <h1>Phonebook</h1>
         <ContactForm onSubmitForm={this.onSubmitForm} contacts={contacts} />
-        <h2>Contacts</h2>
-        <Filter filter={filter} changeFilter={this.changeFilter} />
-        {this.state.contacts.length > 0 && (
-          <ContactList
-            contacts={filteredContacts}
-            removeContact={this.removeContact}
-          />
+        {contacts.length > 0 && (
+          <>
+            <h2>Contacts</h2>
+            <Filter filter={filter} changeFilter={this.changeFilter} />
+            <ContactList
+              contacts={filteredContacts}
+              removeContact={this.removeContact}
+            />
+          </>
         )}
       </section>
     );
