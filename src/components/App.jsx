@@ -55,8 +55,6 @@ export class App extends Component {
   render() {
     const { contacts, filter } = this.state;
 
-    console.log(contacts);
-
     return (
       <section>
         <h1>Phonebook</h1>
