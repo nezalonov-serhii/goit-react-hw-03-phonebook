@@ -12,26 +12,22 @@ export class App extends Component {
   };
 
   componentDidMount() {
-    try {
-      const getLocalContacts = JSON.parse(
-        localStorage.getItem(KEY_STOREGE_CONTACTS)
-      );
-      this.setState({ contacts: getLocalContacts });
-    } catch (error) {
-      console.log(error.message);
+    const storegeContacts = JSON.parse(
+      localStorage.getItem(KEY_STOREGE_CONTACTS)
+    );
+    if (storegeContacts) {
+      this.setState({
+        contacts: storegeContacts,
+      });
     }
   }
 
   componentDidUpdate(_, prevStates) {
     if (prevStates.contacts !== this.state.contacts) {
-      try {
-        localStorage.setItem(
-          KEY_STOREGE_CONTACTS,
-          JSON.stringify(this.state.contacts)
-        );
-      } catch (error) {
-        console.error(error.message);
-      }
+      localStorage.setItem(
+        KEY_STOREGE_CONTACTS,
+        JSON.stringify(this.state.contacts)
+      );
     }
   }
 
@@ -49,13 +45,17 @@ export class App extends Component {
     });
   };
 
+  filteredContacts = () => {
+    const normalizeFilter = this.state.filter.toLowerCase();
+    return this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizeFilter)
+    );
+  };
+
   render() {
     const { contacts, filter } = this.state;
 
-    const normalizeFilter = filter.toLowerCase();
-    const filteredContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizeFilter)
-    );
+    console.log(contacts);
 
     return (
       <section>
@@ -66,7 +66,7 @@ export class App extends Component {
             <h2>Contacts</h2>
             <Filter filter={filter} changeFilter={this.changeFilter} />
             <ContactList
-              contacts={filteredContacts}
+              contacts={this.filteredContacts()}
               removeContact={this.removeContact}
             />
           </>
